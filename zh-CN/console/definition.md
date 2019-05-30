@@ -1,24 +1,39 @@
 # 定义命令
 
-命令的定义主要通过@Command和@Mapping两个注解，`@Command` 定义命令组名称，`@Mapping` 定义操作命令的映射关系。
+一个命令由命令组和执行命令组成，一个类就是一个命令组，类里面的方法对应操作命令，一个命令的运行，是通过执行命令组对应的操作命令。
 
 ## 注解
 
+命令的定义主要通过 `@Command` 和 `@CommandMapping`两个注解，`@Command` 定义命令组名称，`@CommandMapping` 定义操作命令的映射关系。
+
+### Command 注解
+
 **@Command**
 
-定义命令组
+定义命令组，标记一个类为console命令类
 
-- `name` 参数，定义命令组名称，如果缺省，根据配置后缀自动解析
-- `enabled` 是否启用，设为不启用时，将不会显示到命令列表。默认 `true`
-- `coroutine` 参数，定义命令是否为协程，默认 false,如果为true，框架会启动一个协程运行该命令
+拥有属性：
 
-**@Mapping**
+- `name` 参数，定义命令组名称，如果缺省，根据类名称自动解析
+- `alias` 命令组别名，通过别名仍然可以访问它。_允许多个，以逗号隔开即可_
+- `desc` 命令组描述信息说明，支持颜色标签
+- `coroutine` 定义是否为协程下运行，默认 true, 框架会启动一个协程运行该命令
 
-定义操作命令映射关系
+> 若 `desc` 为空，将会自动解析类的第一行注释作为描述
 
-- `name` 参数，定义操作命令的一个映射名称，如果缺省，会执行使用方法名称。
+### CommandMapping 注解
 
-## 帮助信息
+**@CommandMapping**
+
+定义操作命令映射关系，标明了一个具体的命令
+
+拥有属性：
+
+- `name` 参数，定义命令组名称，如果缺省，会执行使用方法名称
+- `alias` 命令别名，通过别名仍然可以访问它。_允许多个，以逗号隔开即可_
+- `desc` 命令的描述信息说明，支持颜色标签
+
+> 若 `desc` 为空，将会自动解析类的第一行注释作为描述
 
 命令帮助信息是命令使用说明信息，也是通过注解完成定义。
 
@@ -29,87 +44,57 @@
 - `@Arguments` 定义命令参数
 - `@Example` 命令使用例子
 
-## 示例
+## 代码示例
 
 ```php
 /**
- * Test command
+ * Provide some commands for manage and watch swoft server project
  *
- * @Command(coroutine=true)
+ * @Command()
  */
 class TestCommand
 {
     /**
-     * Generate CLI command controller class
-     * @Usage {fullCommand} CLASS_NAME SAVE_DIR [--option ...]
-     * @Arguments
-     *   name       The class name, don't need suffix and ext.(eg. <info>demo</info>)
-     *   dir        The class file save dir(default: <info>@app/Commands</info>)
-     * @Options
-     *   -y, --yes BOOL             Whether to ask when writing a file. default is: <info>True</info>
-     *   -o, --override BOOL        Force override exists file. default is: <info>False</info>
-     *   -n, --namespace STRING     The class namespace. default is: <info>App\Commands</info>
-     *   --suffix STRING            The class name suffix. default is: <info>Command</info>
-     *   --tpl-file STRING          The template file name. default is: <info>command.stub</info>
-     *   --tpl-dir STRING           The template file dir path.(default: devtool/res/templates)
-     * @Example
-     *   <info>{fullCommand} demo</info>     Gen DemoCommand class to `@app/Commands`
+     * Start the swoft server and monitor the file changes to restart the server
      *
-     * @param Input  $input
-     * @param Output $output
-     *
-     * @Mapping("test2")
+     * @CommandMapping()
+     * @CommandArgument("targetPath", type="path",
+     *     desc="Your swoft project path, default is current work directory"
+     * )
+     * @CommandOption("interval", type="integer", default=3,
+     *     desc="Interval time for watch files, unit is seconds"
+     * )
+     * @CommandOption(
+     *     "bin-file", short="b", type="string", default="bin/swoft",
+     *     desc="Entry file for the swoft project"
+     * )
+     * @CommandOption(
+     *     "start-cmd", short="c", type="string", default="http:start",
+     *     desc="the server startup command to be executed"
+     * )
+     * @CommandOption(
+     *     "watch", short="w", default="app,config", type="directories",
+     *     desc="List of directories you want to watch, relative the <cyan>targetPath</cyan>"
+     * )
+     * @example
+     *   {binFile} run -c ws:start -b bin/swoft /path/to/php/swoft
+     * @param Input $input
      */
-    public function test(Input $input, Output $output)
+    public function run(Input $input): void
     {
-        App::error('this is eror');
-        App::trace('this is trace');
-        Coroutine::create(function (){
-            App::error('this is eror child');
-            App::trace('this is trace child');
-        });
-
-        var_dump('test', $input, $output, Coroutine::id(),Coroutine::tid());
-    }
-
-    /**
-     * this demo command
-     *
-     * @Usage
-     *   test:{command} [arguments] [options]
-     *
-     * @Options
-     *   -o,--opt   this is command option
-     *
-     * @Arguments
-     *   arg     this is argument
-     *
-     * @Example
-     *   php swoft test:demo arg=stelin -o opt
-     *
-     * @Mapping()
-     */
-    public function demo()
-    {
-        $hasOpt = input()->hasOpt('o');
-        $opt    = input()->getOpt('o');
-        $name   = input()->getArg('arg', 'swoft');
-
-        App::trace('this is command log');
-        Log::info('this is command info log');
-        /* @var UserLogic $logic */
-        $logic = App::getBean(UserLogic::class);
-        $data  = $logic->getUserInfo(['uid1']);
-        var_dump($hasOpt, $opt, $name, $data);
+        Show::aList([
+            'options'   => $input->getOpts(),
+            'arguments' => $input->getArgs(),
+        ]);
     }
 }
 ```
 
-> 命令逻辑里面可以使用 Swoft 所有功能，唯一不一样的是，如果命令不是协程模式运行，所有IO操作，框架底层会自动切换成传统的同步阻塞，但是使用方法是一样的。
+> 命令逻辑里面可以使用 Swoft 所有功能
 
 ## 运行
 
 - 现在你可以执行 `php bin/swoft`, 命令列表中将会显示 test 命令
 - 执行 `php bin/swoft test` 或者 `php bin/swoft test -h` 将会看到 test组里拥有的具体命令
-- 执行 `php bin/swoft test:test2 -h` 将会看到此命令的完整帮助信息
+- 执行 `php bin/swoft test:run -h` 将会看到此命令的完整帮助信息
 

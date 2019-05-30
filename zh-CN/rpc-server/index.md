@@ -1,12 +1,14 @@
 # RPC 服务
 
+# RPC 服务
+
 RPC，是一种远程调用方式（Remote Procedure Call），通过RPC我们可以像调用本地方法一样调用别的机器上的方法，用户将无感服务器与服务器之间的通讯。RPC在微服务当中起到相当大的作用，当然RPC不是微服务必须的一种方式，有别的方式也可以实现这种远程调用例如RESTful API就可以实现远程调用。如果有用过SOAP那么你使用RPC将会觉得很类似，都是可以直接调用别的机器上的方法。
 
 随着业务的发展我们的项目从简单的单体结构逐渐的演化成微服务结构，我们为什么要拆分成微服务呢？那我们来说说微服务和单体架构的优缺点。我们看一下单体架构图。
 
 ## 单体架构
 
-![单体架构](../images/rpc-server-index1.png)
+![单体架构](../image/rpc-server/1.png)
 
 <center>单体架构图</center>
 
@@ -44,7 +46,7 @@ RPC，是一种远程调用方式（Remote Procedure Call），通过RPC我们�
 
 ## 服务调用 
 
-![微服务调用](../images/rpc-server-index2.png)
+![微服务调用](../image/rpc-server/2.png)
 
 <center>微服务调用</center>
 
@@ -58,7 +60,7 @@ RPC，是一种远程调用方式（Remote Procedure Call），通过RPC我们�
 
 ### RPC调用过程
 
-![RPC的调用过程](../images/rpc-server-index3.png)
+![RPC的调用过程](../image/rpc-server/3.png)
 
 <center>RPC调用过程</center>
 

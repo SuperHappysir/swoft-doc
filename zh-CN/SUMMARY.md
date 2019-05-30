@@ -1,115 +1,151 @@
 # Summary
 
-### 基础信息
+## 简介
 
-* [介绍](README.md)
+  * [框架特性](README.md)
+  * [关于 Swoft](introduction/swoft.md)
   * [版本更新](introduction/update.md)
-* [环境搭建](env-build/index.md)
-  * [环境需求](quickstart/enviroment.md)
-  * [框架安装](quickstart/install.md)
-  * [使用Docker](quickstart/docker-installation.md)
-  * [开发准备](quickstart/development.md)
-* [快速起步](quickstart/overview.md)
-  * [服务启动与管理](quickstart/start-server.md)
-  * [env环境配置](quickstart/env-config.md)
-  * [应用简介](quickstart/app-intro.md)
+  * [常见问题](introduction/question.md)
+  * [参与 Swoft](introduction/join.md)
 
-### 框架核心
+## 开始
 
-* [核心概览](core/overview.md)
-* [生命周期](core/framework.md)
-* [配置](core/configuration.md)
-* [Bean容器](core/container.md)
-* [应用组件](core/component.md)
-* [事件管理](core/event-manager.md)
-* [连接池](core/connection-pool.md)
-* [AOP切面编程](core/aop/overview.md)
-  * [实现原理](core/aop/principle.md)
-* [异常处理](core/exception.md)
+### [基础准备](ready/index.md)
 
-### 组件列表
+  * [传统架构](ready/tradition.md)
+  * [IO复用](ready/io.md)
+  * [Swoole 扩展](ready/swoole.md)
+  
+### [快速起步](quick-start/index.md)
 
-* [认证管理](auth/index.md)
-  * [ACL](auth/acl.md)
-  * [使用帮助](auth/help.md)
-* [命令行](console/index.md)
+  * [环境安装](quick-start/development.md)
+  * [框架安装](quick-start/install.md)
+  * [运行服务](quick-start/start-swoft.md)
+  * [应用结构](quick-start/project-skeleton.md)
+
+### [特别注意](notice/index.md)
+
+  * [严禁使用](notice/prohibited.md)
+  * [内存泄漏排查](notice/memory-leak.md)
+  * [性能优化](notice/performance-optimization.md)
+  
+## 基础
+
+### [注解](annotation/index.md)
+
+  * [为什么使用注解](annotation/why.md)
+  * [开发工具](annotation/tool.md)
+  * [如何使用](annotation/usage.md)
+  
+### [配置](config/index.md)
+
+  * [环境配置](config/env.md)
+  * [应用配置](config/config.md)
+  
+### [容器](bean/index.md)
+
+  * [Bean](bean/bean.md)
+  * [单例](bean/singleton.md)
+  * [Prototype](bean/prototype.md)
+  * [请求实例](bean/request.md)
+
+### [事件](event/index.md)
+
+  * [监听与触发](event/usage.md)
+  
+### [切面编程](aop/index.md)
+
+  * [声明](aop/statement.md)
+  * [使用](aop/usage.md)
+  * [顺序](aop/order.md)
+  
+### [公共方法](common/index.md)
+  
+  * [协程方法](common/co.md)
+  
+## 核心
+
+### [组件说明与功能列表](component.md)
+
+### [命令行](console/index.md)
+
   * [命令行配置](console/config.md)
   * [定义命令](console/definition.md)
-  * [输入输出](console/inout.md)
-  * [运行命令](console/run.md)
-  * [任务投递](console/task.md)
-* [HTTP 服务](http-server/index.md)
-  * [请求与响应](http-server/request-response.md)
-  * [中间件](http-server/middleware.md)
-  * [路由](http-server/route.md)
-  * [控制器](http-server/controller.md)
-  * [验证器](http-server/validator.md)
-  * [RESTful](http-server/restful.md)
-* [WebSocket 服务](websocket-server/index.md)
-  * [相关配置](websocket-server/config.md)
+  * [命令运行](console/usage.md)
+  * [输入输出](console/in-out.md)
+
+### [Http Server](http-server/index.md)
+
+   * [常用命令](http-server/command.md)
+   * [配置参数](http-server/setting.md)
+   * [执行流程](http-server/process.md)
+   * [请求与响应](http-server/request-response.md)
+   * [路由](http-server/route.md)
+   * [控制器](http-server/controller.md)
+   * [中间件](http-server/middleware.md)
+   * [异常处理](http-server/exception.md)
+  
+### [Websocket](websocket-server/index.md)
+
+  * [配置服务](websocket-server/config.md)
   * [启动与管理](websocket-server/manage.md)
-  * [控制器](websocket-server/controller.md)
+  * [websocket模块](websocket-server/module.md)
+  * [消息处理](websocket-server/message-route.md)
   * [消息发送](websocket-server/message-send.md)
-* [RPC 服务](rpc-server/index.md)
-  * [配置与启动](rpc-server/init.md)
-  * [接口服务](rpc-server/interface.md)
-  * [参数验证器](rpc-server/validator.md)
-* [缓存](cache/index.md)
-  * [缓存配置](cache/config.md)
-  * [Redis](cache/redis.md)
-* [数据库](db/index.md)
-  * [数据库配置](db/config.md)
-  * [实体定义](db/entity.md)
-  * [查询器介绍](db/query-builder.md)
-  * [AR快速操作](db/active-record.md)
-  * [查询器使用](db/query.md)
-  * [SQL与事务](db/sql-transaction.md)
-* [视图](view/index.md)
-  * [视图配置](view/config.md)
-  * [使用视图](view/usage.md)
-* [Session 会话](session/overview.md)
-  * [快速使用](session/quickstart.md)
-* [RPC 客户端](rpc-client/index.md)
-  * [连接池](rpc-client/pool.md)
-  * [熔断器](rpc-client/breaker.md)
-  * [使用实例](rpc-client/example.md)
-* [HTTP 客户端](http-client/overview.md)
-  * [快速使用](http-client/quickstart.md)
-  * [请求参数](http-client/options.md)
-* [任务](task/index.md)
-  * [任务配置](task/config.md)
-  * [定义任务](task/definition.md)
-  * [投递任务](task/deliver.md)
-  * [定时任务](task/crontab.md)
-* [进程](process/index.md)
-  * [进程配置](process/config.md)
-  * [定义进程与使用](process/course.md)
-* [国际化](i18n/index.md)
-  * [国际化配置](i18n/config.md)
-  * [语言文件格式](i18n/definition.md)
-  * [使用实例](i18n/example.md)
-* [日志](log/index.md)
-  * [配置与使用](log/course.md)
-* [内存操作](memory/index.md)
-  * [Table](memory/table.md)
-* [服务治理](service-governance/index.md)
-  * [熔断器](service-governance/breaker.md)
-  * [服务降级](service-governance/fallback.md)
-  * [负载均衡](service-governance/balance.md)
-  * [服务注册与发现](service-governance/register-discovery.md)
-  * [consul安装使用](service-governance/consul.md)
-* [开发者工具](devtool/index.md)
-  * [工具配置](devtool/config.md)
-  * [表结构生成实体类](db/create-entity.md)
-  * [文件生成命令](devtool/gen-commands.md)
 
-### 其他
+### [RPC Server](rpc-server/index.md)
 
-* [常见问题](question/index.md)
-  * [安装问题](question/install.md)
-  * [运行问题](question/runtime.md)
-  * [一些说明](question/other.md)
-* [参与贡献](#)
-  * [加入Swoft](question/join.md)
-  * [如何贡献](question/contributing.md)
+  * [常用命令](rpc-server/command.md)
+  * [配置参数](rpc-server/setting.md)
+  * [声明服务](rpc-server/statement.md)
+  
+### [RPC Client](rpc-client/index.md)
 
+  * [配置服务](rpc-client/setting.md)
+  * [如何使用](rpc-client/usage.md)
+  
+### [任务](task/index.md)
+
+  * [配置与启用](task/setting.md)
+  * [声明一个任务](task/statement.md)
+  * [协程任务](task/coroutine.md)
+  * [异步任务](task/async.md)
+
+### [数据库](db/index.md)
+
+  * [配置](db/setting.md)
+  * [模型](db/model.md)
+  * [查询器](db/builder.md)
+  * [事务](db/transaction.md)
+  * [原生操作](db/origin.md)
+  
+### [Redis](redis/index.md)
+
+  * [配置](redis/setting.md)
+  * [如何使用](redis/usage.md)
+  * [事务](redis/transaction.md)
+  * [通道](redis/pipeline.md)
+  * [发布订阅](redis/pub-sub.md)
+  
+### [国际化](i18n/index.md)
+
+  * [配置参数](i18n/setting.md)
+  * [如何使用](i18n/usage.md)
+  
+### [验证器](validator/index.md)
+
+  * [声明验证器](validator/statement.md)
+  * [自定义验证器](validator/user-validator.md)
+  * [控制器中使用](validator/controller-validator.md)
+    
+### [日志](log/index.md)
+
+  * [控制台日志](log/clog.md)
+  * [应用日志](log/log.md)
+
+### [最佳实践](best-practices/index.md)
+
+  * [常规架构](best-practices/architecture.md)
+  * [中间件简介](best-practices/middleware.md)
+  * [部署与使用](best-practices/deploy.md)
+  * [演示案例](best-practices/demo.md)

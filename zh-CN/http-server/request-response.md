@@ -1,19 +1,11 @@
 # 请求与响应
 
-Swoft 的请求与响应实现于 [PSR 7](https://github.com/php-fig/http-message)
+Swoft 的请求与响应实现于 PSR 7
 
-请求与响应对象存在于每次 HTTP 请求，这里指的 `Request` 为 `Swoft\Http\Message\Server\Request`，`Response` 为 `Swoft\Http\Message\Server\Response`。
+请求与响应对象存在于每次 HTTP 请求，这里指的 `Request` 为 `Swoft\Http\Message\Request`，`Response` 为 `Swoft\Http\Message\Response`。
 
-## PSR-7
-
-<div class="alert alert-warning alert-dismissible" role="alert">
-  <strong>注意!</strong> 
-  <p>根据PSR-7对象的不可变性(immutable)，所有的 <code>with*</code> 方法都是克隆对象然后返回，必须接收新对象来做进一步处理，或使用链式调用</p>
-</div>
-
-<div class="alert alert-info" role="alert">
-   <strong>Tips</strong> 可通过使用链式调用的写法使代码变得更简洁
-</div>
+注意!
+根据PSR-7对象的不可变性(immutable)，所有的 with* 方法都是克隆对象然后返回，必须接收新对象来做进一步处理，或使用链式调用
 
 ### 基本方法
 
@@ -46,13 +38,12 @@ PSR-7 接口为响应对象提供了这些方法:
 
 ### 如何获取
 
-- 通过 Action 参数注入
-- 通过请求上下文获取 `Swoft\Core\RequestContext::getRequest()`
-- 通过全局函数 `request()` 获取
+- 通过控制器 Action 参数注入
+- 通过请求上下文获取 `Swoft\Context\Context::mustGet()->getRequest()`
 
 ### 请求动作方法
-
 ```php
+$request = \Swoft\Context\Context::mustGet()->getRequest();
 $method = $request->getMethod();
 ```
 
@@ -91,7 +82,7 @@ PSR-7 请求对象的 URI 本身就是一个对象,它提供了下列方法检�
 $headers = $request->getHeaders();
 
 foreach ($headers as $name => $values) {
-    echo $name . ": " . implode(", ", $values);
+    echo $name . ": " . implode(", ", $values).PHP_EOL;
 }
 ```
 
@@ -100,13 +91,15 @@ foreach ($headers as $name => $values) {
 - 返回值是array
 
 ```php
-$headerValueArray = $request->getHeader('Accept');
+$headerValueArray = $request->getHeader('host');
+print_r($headerValueArray);
 ```
 
 - 返回值是字符串
 
 ```php
-$headerValueString = $request->getHeaderLine('Accept');
+$host = $request->getHeaderLine("host");
+print_r($host);
 ```
 
 #### 一些辅助方法
@@ -115,6 +108,49 @@ $headerValueString = $request->getHeaderLine('Accept');
 
 ```php
 if ($request->isAjax()) {
+    // Do something
+}
+if ($request->isXmlHttpRequest()) {
+    // Do something
+}
+```
+
+- GET 
+
+```php
+if ($request->isGet()) {
+    // Do something
+}
+```
+
+- POST
+
+```php
+if ($request->isPost()) {
+    // Do something
+}
+```
+
+- PUT
+
+```php
+if ($request->isPut()) {
+    // Do something
+}
+```
+
+- DELETE
+
+```php
+if ($request->isDelete()) {
+    // Do something
+}
+```
+
+- PATCH
+
+```php
+if ($request->isPatch()) {
     // Do something
 }
 ```
@@ -132,6 +168,8 @@ $contentType = $request->getContentType();
 ```php
 $data = $request->query();
 $some = $request->query('key', 'default value')
+$data = $request->get();
+$some = $request->get('key','default value');
 ```
 
 ### POST 数据
@@ -170,20 +208,49 @@ $data = $request->getServerParams();
 $some = $request->server('key', 'default value')
 ```
 
-### 额外的方法
-
-- 获取 Swoole 的 Request 对象
-
-```php
-$swooleRequest = $request->getSwooleRequest();
-```
-
 ## 响应对象
 
-### 额外的方法
+### 如何获取
 
-- 获取 Swoole 的 Response 对象
+- 通过控制器 Action 参数注入
+- 通过请求上下文获取 `Swoft\Context\Context::mustGet()->getResponse()`
+
+### 常用方法
+
+### 输出状态码
 
 ```php
-$swooleResponse = $response->getSwooleResponse();
+$response = \Swoft\Context\Context::mustGet()->Response();
+return $response->withStatus(404);
+```
+
+### 输出字符串内容
+
+```php
+return $response->withContent("Hello Swoft2.0");
+```
+
+### 输出数组
+
+```php
+$data = ['name'=>'Swoft2.0'];
+$response->withData($data);
+```
+
+### 输出头信息
+
+```php
+return $response->withHeader("name","Swoft2.0");
+```
+
+### 重定向
+
+```php
+return $response->redirect("http://www.swoft.org",302);
+```
+
+### 文件下载
+
+```php
+return $response->file(\alias('@runtime/1.zip'),"application/octet-stream");
 ```
